@@ -34,3 +34,5 @@ On install of VS select following workloads:
 - Data storage and processing
 
 Reference repository: https://github.com/sameer8saini/NZWalks-Solution.git
+
+VS Project template: ASP.NET Core Web API
