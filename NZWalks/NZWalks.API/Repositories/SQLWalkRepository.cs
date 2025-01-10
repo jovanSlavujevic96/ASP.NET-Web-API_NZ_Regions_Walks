@@ -35,7 +35,8 @@ namespace NZWalks.API.Repositories
             return existingWalk;
         }
 
-        public async Task<List<Walk>> GetAllAsync(string? filterOn = null, string? filterQuery = null)
+        public async Task<List<Walk>> GetAllAsync(string? filterOn = null, string? filterQuery = null,
+             string? sortBy = null, bool isAscending = true)
         {
             // Include method is used to load related entities
             // it links the Walk entity with the Difficulty and Region entities
@@ -45,9 +46,22 @@ namespace NZWalks.API.Repositories
             // Filtering
             if (!string.IsNullOrEmpty(filterOn) && !string.IsNullOrEmpty(filterQuery))
             {
-                if (filterOn.ToLower().Equals("name"))
+                if (filterOn.Equals("name", StringComparison.OrdinalIgnoreCase))
                 { 
                     walks = walks.Where(x => x.Name.Contains(filterQuery));
+                }
+            }
+
+            // Sorting
+            if (!string.IsNullOrEmpty(sortBy))
+            {
+                if (sortBy.ToLower().Equals("name"))
+                {
+                    walks = isAscending ? walks.OrderBy(x => x.Name) : walks.OrderByDescending(x => x.Name);
+                }
+                else if (sortBy.Equals("Length", StringComparison.OrdinalIgnoreCase))
+                {
+                    walks = isAscending ? walks.OrderBy(x => x.LengthInKm) : walks.OrderByDescending(x => x.LengthInKm);
                 }
             }
 
