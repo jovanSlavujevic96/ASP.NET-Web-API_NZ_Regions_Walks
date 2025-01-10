@@ -23,7 +23,11 @@ namespace NZWalks.API.Repositories
 
         public async Task<List<Walk>> GetAllAsync()
         {
-            return await dbContext.Walks.ToListAsync();
+            // Include method is used to load related entities
+            // it links the Walk entity with the Difficulty and Region entities
+            // through the DifficultyId and RegionId keys
+            //return await dbContext.Walks.Include(x => x.Difficulty).Include(x => x.Region).ToListAsync();
+            return await dbContext.Walks.Include("Difficulty").Include("Region").ToListAsync();
         }
     }
 }
