@@ -35,13 +35,26 @@ namespace NZWalks.API.Repositories
             return existingWalk;
         }
 
-        public async Task<List<Walk>> GetAllAsync()
+        public async Task<List<Walk>> GetAllAsync(string? filterOn = null, string? filterQuery = null)
         {
             // Include method is used to load related entities
             // it links the Walk entity with the Difficulty and Region entities
             // through the DifficultyId and RegionId keys
+            var walks = dbContext.Walks.Include("Difficulty").Include("Region").AsQueryable();
+
+            // Filtering
+            if (!string.IsNullOrEmpty(filterOn) && !string.IsNullOrEmpty(filterQuery))
+            {
+                if (filterOn.ToLower().Equals("name"))
+                { 
+                    walks = walks.Where(x => x.Name.Contains(filterQuery));
+                }
+            }
+
+            return await walks.ToListAsync();
+
             //return await dbContext.Walks.Include(x => x.Difficulty).Include(x => x.Region).ToListAsync();
-            return await dbContext.Walks.Include("Difficulty").Include("Region").ToListAsync();
+            //return await dbContext.Walks.Include("Difficulty").Include("Region").ToListAsync();
         }
 
         public async Task<Walk?> GetByIdAsync(Guid id)
