@@ -4,7 +4,7 @@ namespace NZWalks.API.Models.Domain
 {
     public class Image
     {
-        required public Guid Id{ get; set; }
+        public Guid Id{ get; set; }
 
         [NotMapped]
         public IFormFile File { get; set; }
@@ -13,6 +13,6 @@ namespace NZWalks.API.Models.Domain
         public string? FileDescription { get; set; }
         required public string FileExtension { get; set; }
         required public long FileSizeInBytes { get; set; }
-        required public string FilePath { get; set; }
+        public string FilePath { get; set; }
     }
 }
