@@ -2,7 +2,7 @@
 
 namespace NZWalks.API.Models.DTO
 {
-    public class RegisterRequestDto
+    public class LoginRequestDto
     {
         [Required]
         [DataType(DataType.EmailAddress)]
@@ -10,7 +10,5 @@ namespace NZWalks.API.Models.DTO
         [Required]
         [DataType(DataType.Password)]
         required public string Password { get; set; }
-
-        public string[]? Roles { get; set; }
     }
 }
