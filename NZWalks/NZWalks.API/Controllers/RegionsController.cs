@@ -32,11 +32,10 @@ namespace NZWalks.API.Controllers
         [Authorize(Roles = "Reader,Writer")]
         public async Task<IActionResult> GetAll()
         {
-            logger.LogInformation("GetAllRegions Action Method was invoked");
-
-            logger.LogWarning("This is a warning message");
-
-            logger.LogError("This is an error message");
+            // some usful log messages
+            //logger.LogInformation("GetAllRegions Action Method was invoked");
+            //logger.LogWarning("This is a warning message");
+            //logger.LogError("This is an error message");
 
             // Get data from database - Domain Models
             var regionsDomain = await regionRepository.GetAllAsync();
@@ -53,7 +52,8 @@ namespace NZWalks.API.Controllers
             //    });
             //}
 
-            logger.LogInformation($"Finished GetAllRegions request with data: {JsonSerializer.Serialize(regionsDomain)}");
+            // some usful log messages
+            //logger.LogInformation($"Finished GetAllRegions request with data: {JsonSerializer.Serialize(regionsDomain)}");
 
             // Map Domain Models to DTOs
             var regionsDto = mapper.Map<List<RegionDto>>(regionsDomain);
