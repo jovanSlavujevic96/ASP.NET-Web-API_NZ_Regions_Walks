@@ -8,8 +8,10 @@ using NZWalks.API.Repositories;
 
 namespace NZWalks.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
+    [ApiVersion("1.0")]
+    [ApiVersion("2.0")]
     public class WalksController : ControllerBase
     {
         private readonly IMapper mapper;
@@ -38,8 +40,9 @@ namespace NZWalks.API.Controllers
 
         // GET Walks
         // GET: https://localhost:portnumber/api/walks?filterOn=Name&filterQuery=Track&sortBy=NameisAscending=true&pageNumber=1&pageSize=10
+        [MapToApiVersion("1.0")]
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromQuery] string? filterOn, [FromQuery] string? filterQuery,
+        public async Task<IActionResult> GetAllV1([FromQuery] string? filterOn, [FromQuery] string? filterQuery,
             [FromQuery] string? sortBy, [FromQuery] bool? isAscending, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 1000)
         {
             var walksDomainModel = await walkRepository.GetAllAsync(filterOn, filterQuery, sortBy, isAscending ?? true, pageNumber, pageSize);
@@ -48,8 +51,19 @@ namespace NZWalks.API.Controllers
             return Ok(mapper.Map<List<WalkDto>>(walksDomainModel));
         }
 
-        // GET Walk by Id
-        // GET: https://localhost:portnumber/api/walks/{id}
+        [MapToApiVersion("2.0")]
+        [HttpGet]
+        public async Task<IActionResult> GetAllV2([FromQuery] string? filterOn, [FromQuery] string? filterQuery,
+           [FromQuery] string? sortBy, [FromQuery] bool? isAscending, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 1000)
+        {
+            var walksDomainModel = await walkRepository.GetAllAsync(filterOn, filterQuery, sortBy, isAscending ?? true, pageNumber, pageSize);
+
+            // Map Domain Model to DTO
+            return Ok(mapper.Map<List<WalkDtoV2>>(walksDomainModel));
+        }
+
+        //// GET Walk by Id
+        //// GET: https://localhost:portnumber/api/walks/{id}
         [HttpGet("{id:Guid}")]
         public async Task<IActionResult> GetById([FromRoute] Guid id)
         {
@@ -63,8 +77,8 @@ namespace NZWalks.API.Controllers
             return Ok(mapper.Map<WalkDto>(walkDomainModel));
         }
 
-        // UPDATE Walk By Id
-        // PUT: /api/Walks/{id}
+        //// UPDATE Walk By Id
+        //// PUT: /api/Walks/{id}
         [HttpPut]
         [Route("{id:Guid}")]
         [ValidateModel]
@@ -83,8 +97,8 @@ namespace NZWalks.API.Controllers
             return Ok(mapper.Map<WalkDto>(walkDomainModel));
         }
 
-        // DELETE Walk By Id
-        // DELETE: /api/Walks/{id}
+        //// DELETE Walk By Id
+        //// DELETE: /api/Walks/{id}
         [HttpDelete]
         [Route("{id:Guid}")]
         public async Task<IActionResult> Delete([FromRoute] Guid id)
