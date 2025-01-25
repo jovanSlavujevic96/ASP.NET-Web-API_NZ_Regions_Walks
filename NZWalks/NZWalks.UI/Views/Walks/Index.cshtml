@@ -17,6 +17,7 @@
             <th>Length</th>
             <th>Difficulty</th>
             <th>Region</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -28,6 +29,10 @@
                 <td>@walk.LengthInKm</td>
                 <td>@walk.Difficulty.Name</td>
                 <td>@walk.Region.Name</td>
+                <td>
+                    <a asp-controller="Walks" asp-action="Edit" asp-route-id="@walk.Id"
+                        class="btn btn-light">Edit</a>
+                </td>
             </tr>
         }
     </tbody>
